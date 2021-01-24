@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if ($a == *"cpu"*)
+then
+lscpu
+elif ($a == *"memory"*)
+then
+ls
+else
+free
+fi
