@@ -1,0 +1,87 @@
+#! /usr/bin/bash
+case "$1" in
+    cpu)
+        lscpu
+        ;;
+    memory)
+    	free
+    	;;
+    *"--version"*)
+    	echo "v0.1.0"
+    	;;
+    user)
+    	case "$2" in 
+    		create)
+    			sudo useradd $3
+    			;;
+    		list)
+    			case "$3" in
+    				*"--sudo-only"*)
+    					cat /etc/group | grep sudo
+    					;;
+    	   			*)  	   				
+    	   			cut -d: -f1 /etc/passwd
+    	   			;;
+    	   		esac
+    	   		;;
+    	   	*)
+    	   		echo "unknown command"
+    	   		echo "type internsct1 --help for help"
+    	   		;;
+    	   esac
+    	   ;;
+    file)
+    	case "$2" in 
+    		*"getinfo"*)
+    			#if ((-z "$4" && -f "$4"))
+    			#then
+    				case "$3" in 
+    					*"--size"*) 
+    		     				echo "Size :" 		$(ls -ld $4 | awk '{print $5;}');;
+    		     			*"--permissions"*)
+    		     				echo "Access :"	$(ls -ld $4 | awk '{print $1;}');;
+    		     			*"--owner"*)
+    		     				echo "owner :" 	$(ls -ld $4 | awk '{print $3;}');;
+    		    			 *"--last-modified"*)
+    		     				echo "Modify :"	$(stat -c %y $4);;
+    		     			*)
+    		      	 		echo "File :" 		$(ls -ld $3 | awk '{print $9;}')
+    					echo "Access :"	$(ls -ld $3 | awk '{print $1;}')
+    					echo "Size :" 		$(ls -ld $3 | awk '{print $5;}')
+    					echo "owner :" 	$(ls -ld $3 | awk '{print $3;}')
+    					echo "Modify :"	$(stat -c %y $3) 
+    		     	 		;;
+   	   			esac
+    			#else
+    			#	echo "file not found"
+    			#fi 
+    			;;  			
+    		*)	
+    			echo "unknown command"
+    	   		echo "type internsct1 --help for help"
+    	   		;;
+    	esac	  		
+    	;; 					
+    *"--help"*)
+    	echo "usage : insternst1 [option]... [filename]..."
+   	echo
+   	echo ""
+   	echo "options:"
+   	echo "--version     			Print the version of the command"
+   	echo "--help   			Print this Help."
+   	echo "cpu getinfo     		print the cpu information of my server"
+   	echo "memory getinfo     		Print the memory information of my server"
+   	echo "user create <username>		to create a new user on my server"
+   	echo "user list			list all the regular user present on my server"
+   	echo "user list --sudo-only		list all the user with sudo permissions on my server"
+   	echo "file getinfo [options]<filename> print the information about the file"
+    	;;
+    *)
+    	echo "unknown command"
+   	echo "type internsct1 --help for help"
+   	;;
+esac
+
+    	    		
+    			
+    		     
